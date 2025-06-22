@@ -1,6 +1,14 @@
+//
+//  MockURLProtocol.swift
+//  CMAITwin
+//
+//  Created by Anderen on 22.06.2025.
+//
+
 import Foundation
 
 class MockURLProtocol: URLProtocol {
+
     override class func canInit(with request: URLRequest) -> Bool {
         return request.url?.path == "/api/sessions"
     }
@@ -10,7 +18,9 @@ class MockURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
-        guard let url = request.url else { return }
+        guard let url = request.url else {
+            return
+        }
 
         if url.path == "/api/sessions" {
             let sessions: [Session] = [
@@ -22,21 +32,27 @@ class MockURLProtocol: URLProtocol {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .iso8601
 
-            if let data = try? encoder.encode(sessions) {
-                let response = HTTPURLResponse(
-                    url: url,
-                    statusCode: 200,
-                    httpVersion: nil,
-                    headerFields: ["Content-Type": "application/json"]
-                )!
-
-                client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-                client?.urlProtocol(self, didLoad: data)
+            guard let data = try? encoder.encode(sessions) else {
+                return
             }
+
+            guard let response = HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: ["Content-Type": "application/json"]
+            ) else {
+                return
+            }
+
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: data)
         }
 
         client?.urlProtocolDidFinishLoading(self)
     }
 
-    override func stopLoading() {}
+    override func stopLoading() {
+    }
+
 }
