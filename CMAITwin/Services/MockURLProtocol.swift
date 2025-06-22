@@ -26,7 +26,7 @@ class MockURLProtocol: URLProtocol {
             let sessions: [Session] = [
                 Session(id: 1, date: Date().addingTimeInterval(-3600), title: "Career Chat", category: .career, summary: "Talked about job goals."),
                 Session(id: 2, date: Date().addingTimeInterval(-86400), title: "Feeling Stressed", category: .emotions, summary: "Discussed coping strategies."),
-                Session(id: 3, date: Date().addingTimeInterval(-172800), title: "Relationship talk", category: .productivity, summary: "Discussed communication.")
+                Session(id: 3, date: Date().addingTimeInterval(-172_800), title: "Relationship talk", category: .productivity, summary: "Discussed communication.")
             ]
 
             let encoder = JSONEncoder()

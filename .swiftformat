@@ -1,3 +1,3 @@
 --ranges no-space
 
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,initCoderUnavailable, trailingCommas,emptyBraces,extensionAccessControl
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,initCoderUnavailable, trailingCommas,emptyBraces,extensionAccessControl,numberFormatting

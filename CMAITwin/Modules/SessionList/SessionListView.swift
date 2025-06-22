@@ -54,11 +54,12 @@ struct SessionListView: View {
                     Text("Start new session")
                         .fontWeight(.bold)
                 },
-                trailing: Button(action: {
-                viewModel.loadSessions()
-            }) {
-                Image(systemName: "arrow.clockwise")
-            })
+                trailing: Button {
+                    viewModel.loadSessions()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+            )
             .onAppear {
                 viewModel.loadSessions()
             }
