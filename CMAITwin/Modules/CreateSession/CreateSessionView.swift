@@ -1,0 +1,69 @@
+import SwiftUI
+
+struct CreateSessionView: View {
+
+    @StateObject private var viewModel = CreateSessionViewModel()
+
+    @State private var isSessionCreated = false
+
+    var body: some View {
+        NavigationStack {
+            VStack {
+                TextField("Enter session title", text: $viewModel.title)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+
+                VStack(alignment: .leading) {
+                    Text("Chose category:")
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, -12)
+
+                    Picker("Category", selection: $viewModel.selectedCategory) {
+                        ForEach(Category.allCases, id: \.self) { category in
+                            Text(category.emoji + " " + category.rawValue.capitalized)
+                                .tag(category)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .padding()
+                }
+
+                Spacer()
+
+                Button {
+                    viewModel.createSession()
+                    if viewModel.createdSession != nil {
+                        isSessionCreated = true
+                    }
+                } label: {
+                    HStack {
+                        Text("Start Session")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: 44)
+                    .background(viewModel.title.isEmpty ? .gray.opacity(0.2) : .blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+                }
+                .disabled(viewModel.title.isEmpty)
+            }
+            .navigationTitle("Create New Session")
+            .navigationDestination(isPresented: $isSessionCreated) {
+                AIChatView(sessionId: viewModel.createdSession?.id ?? -1)
+            }
+        }
+    }
+
+}
+
+#Preview {
+    CreateSessionView()
+}
+
+
+
