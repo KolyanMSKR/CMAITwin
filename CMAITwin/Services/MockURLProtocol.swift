@@ -9,6 +9,12 @@ import Foundation
 
 class MockURLProtocol: URLProtocol {
 
+    static var mockSessions: [Session] = [
+        Session(id: 1, date: Date().addingTimeInterval(-3600), title: "Career Chat", category: .career, summary: "Talked about job goals."),
+        Session(id: 2, date: Date().addingTimeInterval(-86400), title: "Feeling Stressed", category: .emotions, summary: "Discussed coping strategies."),
+        Session(id: 3, date: Date().addingTimeInterval(-172_800), title: "Relationship talk", category: .productivity, summary: "Discussed communication.")
+    ]
+
     override class func canInit(with request: URLRequest) -> Bool {
         return request.url?.path == "/api/sessions"
     }
@@ -19,40 +25,112 @@ class MockURLProtocol: URLProtocol {
 
     override func startLoading() {
         guard let url = request.url else {
+            client?.urlProtocol(self, didFailWithError: URLError(.badURL))
             return
         }
 
-        if url.path == "/api/sessions" {
-            let sessions: [Session] = [
-                Session(id: 1, date: Date().addingTimeInterval(-3600), title: "Career Chat", category: .career, summary: "Talked about job goals."),
-                Session(id: 2, date: Date().addingTimeInterval(-86400), title: "Feeling Stressed", category: .emotions, summary: "Discussed coping strategies."),
-                Session(id: 3, date: Date().addingTimeInterval(-172_800), title: "Relationship talk", category: .productivity, summary: "Discussed communication.")
-            ]
+        switch (url.path, request.httpMethod) {
+        case ("/api/sessions", "GET"):
+            handleGET(url: url)
 
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-
-            guard let data = try? encoder.encode(sessions) else {
-                return
+        case ("/api/sessions", "POST"):
+            if let stream = request.httpBodyStream {
+                let data = Data(reading: stream)
+                handlePOST(url: url, bodyData: data)
+            } else if let body = request.httpBody {
+                handlePOST(url: url, bodyData: body)
+            } else {
+                client?.urlProtocol(self, didFailWithError: URLError(.badServerResponse))
             }
 
-            guard let response = HTTPURLResponse(
-                url: url,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: ["Content-Type": "application/json"]
-            ) else {
-                return
-            }
+        default:
+            client?.urlProtocol(self, didFailWithError: URLError(.unsupportedURL))
+        }
+    }
 
-            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            client?.urlProtocol(self, didLoad: data)
+    private func handleGET(url: URL) {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+
+        guard let data = try? encoder.encode(MockURLProtocol.mockSessions),
+              let response = HTTPURLResponse(
+                  url: url,
+                  statusCode: 200,
+                  httpVersion: nil,
+                  headerFields: ["Content-Type": "application/json"]
+              )
+        else {
+            client?.urlProtocol(self, didFailWithError: URLError(.cannotDecodeContentData))
+            return
         }
 
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: data)
         client?.urlProtocolDidFinishLoading(self)
     }
 
-    override func stopLoading() {
+    private func handlePOST(url: URL, bodyData: Data) {
+        guard let json = try? JSONSerialization.jsonObject(with: bodyData) as? [String: String],
+              let title = json["title"],
+              let categoryRaw = json["category"],
+              let category = Category(rawValue: categoryRaw)
+        else {
+            client?.urlProtocol(self, didFailWithError: URLError(.cannotParseResponse))
+            return
+        }
+
+        let newSession = Session(
+            id: Int.random(in: 1000...9999),
+            date: Date(),
+            title: title,
+            category: category,
+            summary: "Mock summary for session."
+        )
+
+        MockURLProtocol.mockSessions.insert(newSession, at: 0)
+
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+
+        guard let data = try? encoder.encode(newSession),
+              let response = HTTPURLResponse(
+                  url: url,
+                  statusCode: 201,
+                  httpVersion: nil,
+                  headerFields: ["Content-Type": "application/json"]
+              )
+        else {
+            client?.urlProtocol(self, didFailWithError: URLError(.cannotDecodeContentData))
+            return
+        }
+
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: data)
+        client?.urlProtocolDidFinishLoading(self)
     }
 
+    override func stopLoading() {}
+
+}
+
+private extension Data {
+    init(reading input: InputStream) {
+        self.init()
+        input.open()
+        let bufferSize = 1024
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        defer {
+            buffer.deallocate()
+            input.close()
+        }
+
+        while input.hasBytesAvailable {
+            let read = input.read(buffer, maxLength: bufferSize)
+            if read > 0 {
+                append(buffer, count: read)
+            } else {
+                break
+            }
+        }
+    }
 }
