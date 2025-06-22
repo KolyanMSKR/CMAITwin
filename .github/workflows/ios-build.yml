@@ -1,0 +1,40 @@
+name: Build CMAITwin
+
+on:
+  push:
+    branches: [ main, "Task/*" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+
+      - name: Run SwiftFormat
+        run: swiftformat . --lint --strict
+
+  build:
+    runs-on: macos-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode (Latest)
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build CMAITwin
+        run: |
+          xcodebuild \
+            -scheme CMAITwin \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max,OS=18.2' \
+            clean build \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
