@@ -5,12 +5,13 @@
 //  Created by Anderen on 22.06.2025.
 //
 
-
 import SwiftUI
 
 struct SessionListView: View {
 
     @StateObject private var viewModel = SessionViewModel()
+
+    // MARK: - Body Property
 
     var body: some View {
         NavigationStack {
@@ -36,8 +37,10 @@ struct SessionListView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
+
                             Spacer()
-                            Text(session.date)
+
+                            Text(session.date, style: .date)
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -61,7 +64,7 @@ struct SessionListView: View {
             }
         }
     }
-    
+
 }
 
 #Preview {
