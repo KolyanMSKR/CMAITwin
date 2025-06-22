@@ -66,7 +66,7 @@ struct CreateSessionView: View {
             }
         }
     }
-    
+
 }
 
 #Preview {

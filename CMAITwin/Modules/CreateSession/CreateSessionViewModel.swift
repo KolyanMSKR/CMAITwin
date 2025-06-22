@@ -25,10 +25,10 @@ class CreateSessionViewModel: ObservableObject {
                 self?.isCreatingSession = false
 
                 switch result {
-                case .success(let session):
+                case let .success(session):
                     self?.createdSession = session
                     completion(true)
-                case .failure(let error):
+                case let .failure(error):
                     self?.error = error
                     completion(false)
                 }
