@@ -21,11 +21,11 @@ class SessionViewModel: ObservableObject {
         sessionService.fetchSessions { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
-                
+
                 switch result {
-                case .success(let sessions):
+                case let .success(sessions):
                     self?.sessions = sessions.sorted { $0.date > $1.date }
-                case .failure(let error):
+                case let .failure(error):
                     self?.error = error
                 }
             }

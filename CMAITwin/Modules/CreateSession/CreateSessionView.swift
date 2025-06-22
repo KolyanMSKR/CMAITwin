@@ -18,6 +18,3 @@ struct CreateSessionView: View {
 #Preview {
     CreateSessionView()
 }
-
-
-
