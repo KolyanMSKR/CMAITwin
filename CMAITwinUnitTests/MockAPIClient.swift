@@ -5,8 +5,8 @@
 //  Created by Anderen on 23.06.2025.
 //
 
-@testable import CMAITwin
 import Foundation
+@testable import CMAITwin
 
 final class MockAPIClient: APIClientProtocol {
 
