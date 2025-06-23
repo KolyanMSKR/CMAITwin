@@ -16,7 +16,7 @@ final class APIClient {
     init() {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [MockURLProtocol.self]
-        self.session = URLSession(configuration: config)
+        session = URLSession(configuration: config)
         decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
     }
@@ -33,8 +33,10 @@ final class APIClient {
                     return
                 }
 
-                guard let http = response as? HTTPURLResponse,
-                      (200..<300).contains(http.statusCode) else {
+                guard
+                    let http = response as? HTTPURLResponse,
+                    (200..<300).contains(http.statusCode)
+                else {
                     let code = (response as? HTTPURLResponse)?.statusCode ?? -1
                     completion(.failure(APIError.httpError(statusCode: code)))
                     return
