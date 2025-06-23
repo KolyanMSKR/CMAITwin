@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol APIClientProtocol {
+    func send<R: APIRequest>(_ request: R, completion: @escaping (Result<R.Response, Error>) -> Void)
+}
+
 final class APIClient {
 
     static let shared = APIClient()

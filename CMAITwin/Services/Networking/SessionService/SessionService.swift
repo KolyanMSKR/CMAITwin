@@ -9,9 +9,9 @@ import Foundation
 
 final class SessionService: ObservableObject {
 
-    private let client: APIClient
+    private let client: APIClientProtocol
 
-    init(client: APIClient) {
+    init(client: APIClientProtocol) {
         self.client = client
     }
 
