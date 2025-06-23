@@ -23,7 +23,7 @@ final class SessionServiceTests: XCTestCase {
 
         service.fetchSessions { result in
             switch result {
-            case .success(let sessions):
+            case let .success(sessions):
                 XCTAssertEqual(sessions, expectedSessions)
             case .failure:
                 XCTFail("Expected success")
@@ -46,7 +46,7 @@ final class SessionServiceTests: XCTestCase {
             switch result {
             case .success:
                 XCTFail("Expected failure")
-            case .failure(let error as NSError):
+            case let .failure(error as NSError):
                 XCTAssertEqual(error, expectedError)
             default:
                 XCTFail("Unexpected error type")
@@ -69,7 +69,7 @@ final class SessionServiceTests: XCTestCase {
 
         service.fetchMessages(for: 42) { result in
             switch result {
-            case .success(let messages):
+            case let .success(messages):
                 XCTAssertEqual(messages, expectedMessages)
             case .failure:
                 XCTFail("Expected success")
