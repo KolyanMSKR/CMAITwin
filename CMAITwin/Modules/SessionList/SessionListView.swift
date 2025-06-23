@@ -25,26 +25,30 @@ struct SessionListView: View {
                         .padding()
                 } else {
                     List(viewModel.sessions) { session in
-                        HStack {
-                            Text(session.category.emoji)
-                                .font(.title)
-                                .padding(.trailing, 8)
+                        NavigationLink {
+                            AIChatView(sessionId: session.id)
+                        } label: {
+                            HStack {
+                                Text(session.category.emoji)
+                                    .font(.title)
+                                    .padding(.trailing, 8)
 
-                            VStack(alignment: .leading) {
-                                Text(session.title)
-                                    .font(.headline)
-                                Text(session.summary)
-                                    .font(.subheadline)
+                                VStack(alignment: .leading) {
+                                    Text(session.title)
+                                        .font(.headline)
+                                    Text(session.summary)
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+
+                                Spacer()
+
+                                Text(session.date, style: .date)
+                                    .font(.caption)
                                     .foregroundColor(.gray)
                             }
-
-                            Spacer()
-
-                            Text(session.date, style: .date)
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                            .padding(.vertical, 6)
                         }
-                        .padding()
                     }
                 }
             }
