@@ -7,12 +7,11 @@
 
 import Foundation
 
-final class SessionService {
+final class SessionService: ObservableObject {
 
-    static let shared = SessionService()
     private let client: APIClient
 
-    private init(client: APIClient = .shared) {
+    init(client: APIClient) {
         self.client = client
     }
 

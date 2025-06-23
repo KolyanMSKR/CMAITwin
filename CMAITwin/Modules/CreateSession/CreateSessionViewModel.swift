@@ -15,7 +15,15 @@ class CreateSessionViewModel: ObservableObject {
     @Published var error: Error? = nil
     @Published var createdSession: Session? = nil
 
-    private var sessionService = SessionService.shared
+    private let sessionService: SessionService
+
+    // MARK: - Inits
+
+    init(sessionService: SessionService) {
+        self.sessionService = sessionService
+    }
+
+    // MARK: - Public methods
 
     func createSession(completion: @escaping (Bool) -> Void) {
         isCreatingSession = true

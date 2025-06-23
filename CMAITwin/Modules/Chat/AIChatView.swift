@@ -9,12 +9,20 @@ import SwiftUI
 
 struct AIChatView: View {
 
-    let sessionId: Int
+    private let sessionId: Int
 
-    @StateObject private var viewModel = AIChatViewModel()
+    @Environment(\.sessionService) private var sessionService
+    @StateObject private var viewModel: AIChatViewModel
     @State private var inputText: String = ""
 
-    // MARK: - Body property
+    // MARK: - Inits
+
+    init(sessionId: Int) {
+        self.sessionId = sessionId
+        _viewModel = StateObject(wrappedValue: AIChatViewModel(sessionService: SessionService(client: APIClient.shared)))
+    }
+
+    // MARK: - Body Property
 
     var body: some View {
         VStack(spacing: 0) {

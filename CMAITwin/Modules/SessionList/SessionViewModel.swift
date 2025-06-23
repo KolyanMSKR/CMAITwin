@@ -13,7 +13,15 @@ class SessionViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var error: Error? = nil
 
-    private var sessionService = SessionService.shared
+    private let sessionService: SessionService
+
+    // MARK: - Inits
+
+    init(sessionService: SessionService) {
+        self.sessionService = sessionService
+    }
+
+    // MARK: - Public methods
 
     func loadSessions() {
         isLoading = true

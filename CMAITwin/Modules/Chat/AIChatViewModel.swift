@@ -13,7 +13,15 @@ class AIChatViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var error: Error?
 
-    private let sessionService = SessionService.shared
+    private let sessionService: SessionService
+
+    // MARK: - Inits
+
+    init(sessionService: SessionService) {
+        self.sessionService = sessionService
+    }
+
+    // MARK: - Public methods
 
     func loadMessages(for sessionId: Int) {
         isLoading = true
