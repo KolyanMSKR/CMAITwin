@@ -16,7 +16,8 @@ class MockURLProtocol: URLProtocol {
     ]
 
     override class func canInit(with request: URLRequest) -> Bool {
-        return request.url?.path == "/api/sessions"
+        guard let url = request.url else { return false }
+        return url.host == "mock.api" && url.path.starts(with: "/api/sessions")
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -26,6 +27,11 @@ class MockURLProtocol: URLProtocol {
     override func startLoading() {
         guard let url = request.url else {
             client?.urlProtocol(self, didFailWithError: URLError(.badURL))
+            return
+        }
+
+        if url.path.starts(with: "/api/sessions/"), url.path.hasSuffix("/messages") {
+            handleMessages(url: url)
             return
         }
 
@@ -47,6 +53,15 @@ class MockURLProtocol: URLProtocol {
             client?.urlProtocol(self, didFailWithError: URLError(.unsupportedURL))
         }
     }
+
+    override func stopLoading() {
+    }
+
+}
+
+// MARK: - Private extension
+
+private extension MockURLProtocol {
 
     private func handleGET(url: URL) {
         let encoder = JSONEncoder()
@@ -109,7 +124,33 @@ class MockURLProtocol: URLProtocol {
         client?.urlProtocolDidFinishLoading(self)
     }
 
-    override func stopLoading() {}
+    private func handleMessages(url: URL) {
+        let sampleMessages: [Message] = [
+            Message(id: UUID(), text: "Hi! How are you today?", sender: .ai, timestamp: Date().addingTimeInterval(-300)),
+            Message(id: UUID(), text: "Feeling a bit overwhelmed with work.", sender: .user, timestamp: Date().addingTimeInterval(-240)),
+            Message(id: UUID(), text: "Let's break it down. What's causing the stress?", sender: .ai, timestamp: Date().addingTimeInterval(-180))
+        ]
+
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+
+        guard
+            let data = try? encoder.encode(sampleMessages),
+            let response = HTTPURLResponse(
+                url: url,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: ["Content-Type": "application/json"]
+            )
+        else {
+            client?.urlProtocol(self, didFailWithError: URLError(.cannotParseResponse))
+            return
+        }
+
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: data)
+        client?.urlProtocolDidFinishLoading(self)
+    }
 
 }
 

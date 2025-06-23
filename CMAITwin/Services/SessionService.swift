@@ -57,6 +57,17 @@ class SessionService {
         performRequest(request, responseType: Session.self, completion: completion)
     }
 
+    func fetchMessages(for sessionId: Int, completion: @escaping (Result<[Message], Error>) -> Void) {
+        guard let url = URL(string: "https://mock.api/api/sessions/\(sessionId)/messages") else {
+            completion(.failure(URLError(.badURL)))
+            return
+        }
+
+        let request = URLRequest(url: url)
+
+        performRequest(request, responseType: [Message].self, completion: completion)
+    }
+
     // MARK: - Private Methods
 
     private func performRequest<T: Decodable>(
