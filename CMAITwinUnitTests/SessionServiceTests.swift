@@ -1,5 +1,13 @@
+//
+//  SessionServiceTests.swift
+//  CMAITwin
+//
+//  Created by Anderen on 23.06.2025.
+//
+
+
 import XCTest
-@testable import YourAIApp // Замінити на назву твого модуля
+@testable import CMAITwin
 
 final class SessionServiceTests: XCTestCase {
 
@@ -52,7 +60,7 @@ final class SessionServiceTests: XCTestCase {
     func testFetchMessages_Success() {
         let mockClient = MockAPIClient()
         let expectedMessages = [
-            Message(id: 1, text: "Hello", sender: .ai, timestamp: Date())
+            Message(id: UUID(), text: "Hello", sender: .ai, timestamp: Date())
         ]
         mockClient.fetchMessagesResult = .success(expectedMessages)
 

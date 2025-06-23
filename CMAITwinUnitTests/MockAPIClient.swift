@@ -1,5 +1,13 @@
+//
+//  MockAPIClient.swift
+//  CMAITwin
+//
+//  Created by Anderen on 23.06.2025.
+//
+
+
 import Foundation
-@testable import YourAIApp // ← заміни на ім'я свого модуля
+@testable import CMAITwin
 
 final class MockAPIClient: APIClientProtocol {
 
@@ -7,7 +15,7 @@ final class MockAPIClient: APIClientProtocol {
     var createSessionResult: Result<Session, Error>?
     var fetchMessagesResult: Result<[Message], Error>?
 
-    func send<R>(_ request: R, completion: @escaping (Result<R.Response, Error>) -> Void) where R : APIRequest {
+    func send<R>(_ request: R, completion: @escaping (Result<R.Response, Error>) -> Void) where R: APIRequest {
         switch request {
         case is FetchSessionsRequest:
             completion(fetchSessionsResult as! Result<R.Response, Error>)
@@ -19,4 +27,5 @@ final class MockAPIClient: APIClientProtocol {
             fatalError("Unexpected request type: \(type(of: request))")
         }
     }
+
 }
