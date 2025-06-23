@@ -1,6 +1,6 @@
 --ranges no-space
 
---sortImports testable-last
+--importgrouping testable-last
 
 --disable blankLinesAtStartOfScope
 
