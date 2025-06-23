@@ -23,9 +23,9 @@ class AIChatViewModel: ObservableObject {
                 self?.isLoading = false
 
                 switch result {
-                case .success(let messages):
+                case let .success(messages):
                     self?.messages = messages.sorted { $0.timestamp < $1.timestamp }
-                case .failure(let error):
+                case let .failure(error):
                     self?.error = error
                 }
             }

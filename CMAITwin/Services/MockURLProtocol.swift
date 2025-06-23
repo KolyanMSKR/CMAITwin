@@ -48,7 +48,6 @@ class MockURLProtocol: URLProtocol {
             } else {
                 client?.urlProtocol(self, didFailWithError: URLError(.badServerResponse))
             }
-            
 
         default:
             client?.urlProtocol(self, didFailWithError: URLError(.unsupportedURL))
