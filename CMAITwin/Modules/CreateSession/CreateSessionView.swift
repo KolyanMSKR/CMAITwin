@@ -9,9 +9,17 @@ import SwiftUI
 
 struct CreateSessionView: View {
 
-    @StateObject private var viewModel = CreateSessionViewModel()
-
+    @Environment(\.sessionService) private var sessionService
+    @StateObject private var viewModel: CreateSessionViewModel
     @State private var isSessionCreated = false
+
+    // MARK: - Inits
+
+    init() {
+        _viewModel = StateObject(wrappedValue: CreateSessionViewModel(sessionService: SessionService(client: APIClient.shared)))
+    }
+
+    // MARK: - Body Property
 
     var body: some View {
         NavigationStack {

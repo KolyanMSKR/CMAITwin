@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		F5D4EB9F2E09D9CE0010C29D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F5220F252E07FCB0006BA911 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F5220F2C2E07FCB0006BA911;
+			remoteInfo = CMAITwin;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		F5220F2D2E07FCB0006BA911 /* CMAITwin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CMAITwin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D4EB9B2E09D9CE0010C29D /* CMAITwinUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CMAITwinUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = CMAITwin;
 			sourceTree = "<group>";
 		};
+		F5D4EB9C2E09D9CE0010C29D /* CMAITwinUnitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CMAITwinUnitTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		F5220F2A2E07FCB0006BA911 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D4EB982E09D9CE0010C29D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				F5220F2F2E07FCB0006BA911 /* CMAITwin */,
+				F5D4EB9C2E09D9CE0010C29D /* CMAITwinUnitTests */,
 				F5220F2E2E07FCB0006BA911 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				F5220F2D2E07FCB0006BA911 /* CMAITwin.app */,
+				F5D4EB9B2E09D9CE0010C29D /* CMAITwinUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = F5220F2D2E07FCB0006BA911 /* CMAITwin.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F5D4EB9A2E09D9CE0010C29D /* CMAITwinUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5D4EBA12E09D9CE0010C29D /* Build configuration list for PBXNativeTarget "CMAITwinUnitTests" */;
+			buildPhases = (
+				F5D4EB972E09D9CE0010C29D /* Sources */,
+				F5D4EB982E09D9CE0010C29D /* Frameworks */,
+				F5D4EB992E09D9CE0010C29D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F5D4EBA02E09D9CE0010C29D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F5D4EB9C2E09D9CE0010C29D /* CMAITwinUnitTests */,
+			);
+			name = CMAITwinUnitTests;
+			packageProductDependencies = (
+			);
+			productName = CMAITwinUnitTests;
+			productReference = F5D4EB9B2E09D9CE0010C29D /* CMAITwinUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					F5220F2C2E07FCB0006BA911 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					F5D4EB9A2E09D9CE0010C29D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = F5220F2C2E07FCB0006BA911;
 					};
 				};
 			};
@@ -100,12 +152,20 @@
 			projectRoot = "";
 			targets = (
 				F5220F2C2E07FCB0006BA911 /* CMAITwin */,
+				F5D4EB9A2E09D9CE0010C29D /* CMAITwinUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F5220F2B2E07FCB0006BA911 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5D4EB992E09D9CE0010C29D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +182,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F5D4EB972E09D9CE0010C29D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F5D4EBA02E09D9CE0010C29D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F5220F2C2E07FCB0006BA911 /* CMAITwin */;
+			targetProxy = F5D4EB9F2E09D9CE0010C29D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F5220F392E07FCB1006BA911 /* Debug */ = {
@@ -302,6 +377,42 @@
 			};
 			name = Release;
 		};
+		F5D4EBA22E09D9CE0010C29D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TAYA99N6BS;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MK.CMAITwinUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CMAITwin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CMAITwin";
+			};
+			name = Debug;
+		};
+		F5D4EBA32E09D9CE0010C29D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TAYA99N6BS;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MK.CMAITwinUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CMAITwin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CMAITwin";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -319,6 +430,15 @@
 			buildConfigurations = (
 				F5220F3C2E07FCB1006BA911 /* Debug */,
 				F5220F3D2E07FCB1006BA911 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F5D4EBA12E09D9CE0010C29D /* Build configuration list for PBXNativeTarget "CMAITwinUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5D4EBA22E09D9CE0010C29D /* Debug */,
+				F5D4EBA32E09D9CE0010C29D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

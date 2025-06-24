@@ -9,7 +9,14 @@ import SwiftUI
 
 struct SessionListView: View {
 
-    @StateObject private var viewModel = SessionViewModel()
+    @StateObject private var viewModel: SessionViewModel
+    @Environment(\.sessionService) private var sessionService
+
+    // MARK: - Inits
+
+    init() {
+        _viewModel = StateObject(wrappedValue: SessionViewModel(sessionService: SessionService(client: APIClient.shared)))
+    }
 
     // MARK: - Body Property
 

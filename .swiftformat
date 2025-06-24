@@ -1,3 +1,23 @@
 --ranges no-space
 
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,initCoderUnavailable, trailingCommas,emptyBraces,extensionAccessControl,numberFormatting,preferForLoop
+--importgrouping testable-last
+
+--disable blankLinesAtStartOfScope
+
+--disable blankLinesAtEndOfScope
+
+--disable unusedArguments
+
+--disable initCoderUnavailable
+
+--disable trailingCommas
+
+--disable emptyBraces
+
+--disable extensionAccessControl
+
+--disable numberFormatting
+
+--disable preferForLoop
+
+--disable redundantType
