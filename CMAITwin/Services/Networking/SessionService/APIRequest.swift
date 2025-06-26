@@ -19,7 +19,7 @@ protocol APIRequest {
     var body: Data? { get }
 }
 
-// MARK: - extension APIRequest
+// MARK: - Extension APIRequest
 
 extension APIRequest {
 
@@ -28,13 +28,18 @@ extension APIRequest {
     var body: Data? { nil }
 
     var urlRequest: URLRequest {
-        let url = baseURL.appendingPathComponent(path)
+        let urlString = baseURL.absoluteString + path
+        guard let url = URL(string: urlString) else {
+            fatalError("Invalid URL: \(urlString)")
+        }
+
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.httpBody = body
         headers.forEach { key, value in
             request.setValue(value, forHTTPHeaderField: key)
         }
-        request.httpBody = body
+
         return request
     }
 

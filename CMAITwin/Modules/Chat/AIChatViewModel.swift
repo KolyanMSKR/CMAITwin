@@ -14,17 +14,20 @@ class AIChatViewModel: ObservableObject {
     @Published var error: Error?
 
     private let sessionService: SessionService
+    private let sessionId: Int
 
     // MARK: - Inits
 
-    init(sessionService: SessionService) {
+    init(sessionService: SessionService, sessionId: Int) {
         self.sessionService = sessionService
+        self.sessionId = sessionId
     }
 
     // MARK: - Public methods
 
-    func loadMessages(for sessionId: Int) {
+    func loadMessages() {
         isLoading = true
+        error = nil
 
         sessionService.fetchMessages(for: sessionId) { [weak self] result in
             DispatchQueue.main.async {
@@ -41,23 +44,19 @@ class AIChatViewModel: ObservableObject {
     }
 
     func sendMessage(_ text: String) {
-        let userMessage = Message(
-            id: UUID(),
-            text: text,
-            sender: .user,
-            timestamp: Date()
-        )
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
 
-        messages.append(userMessage)
+        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-            let aiReply = Message(
-                id: UUID(),
-                text: "Let's talk more about \"\(text)\".",
-                sender: .ai,
-                timestamp: Date()
-            )
-            self.messages.append(aiReply)
+        sessionService.sendMessage(sessionId: sessionId, text: trimmedText) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.loadMessages()
+                case let .failure(error):
+                    self?.error = error
+                }
+            }
         }
     }
 

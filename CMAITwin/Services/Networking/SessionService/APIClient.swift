@@ -18,7 +18,7 @@ final class APIClient: APIClientProtocol {
     private let decoder: JSONDecoder
 
     init() {
-        let config = URLSessionConfiguration.ephemeral
+        let config = URLSessionConfiguration.default
         config.protocolClasses = [MockURLProtocol.self]
         session = URLSession(configuration: config)
         decoder = JSONDecoder()
@@ -30,6 +30,7 @@ final class APIClient: APIClientProtocol {
         completion: @escaping (Result<R.Response, Error>) -> Void
     ) {
         let urlRequest = request.urlRequest
+
         let task = session.dataTask(with: urlRequest) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {

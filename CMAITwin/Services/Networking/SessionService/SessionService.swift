@@ -38,4 +38,13 @@ final class SessionService: ObservableObject {
         client.send(request, completion: completion)
     }
 
+    func sendMessage(
+        sessionId: Int,
+        text: String,
+        completion: @escaping (Result<Message, Error>) -> Void
+    ) {
+        let request = SendMessageRequest(sessionId: sessionId, text: text)
+        client.send(request, completion: completion)
+    }
+
 }
