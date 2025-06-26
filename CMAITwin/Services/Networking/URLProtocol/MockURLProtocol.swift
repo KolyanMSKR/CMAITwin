@@ -168,8 +168,10 @@ private extension MockURLProtocol {
 
     private func handleGetMessages(url: URL) {
         let pathComponents = url.path.split(separator: "/")
-        guard pathComponents.count >= 3,
-              let sessionId = Int(pathComponents[2]) else {
+        guard
+            pathComponents.count >= 3,
+            let sessionId = Int(pathComponents[2])
+        else {
             client?.urlProtocol(self, didFailWithError: URLError(.badURL))
             return
         }
@@ -201,7 +203,8 @@ private extension MockURLProtocol {
         let pathComponents = url.path.split(separator: "/")
 
         guard pathComponents.count >= 3,
-              let sessionId = Int(pathComponents[2]) else {
+              let sessionId = Int(pathComponents[2])
+        else {
             client?.urlProtocol(self, didFailWithError: URLError(.badURL))
             return
         }
