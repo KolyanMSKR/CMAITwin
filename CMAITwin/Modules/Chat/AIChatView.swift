@@ -19,7 +19,10 @@ struct AIChatView: View {
 
     init(sessionId: Int) {
         self.sessionId = sessionId
-        _viewModel = StateObject(wrappedValue: AIChatViewModel(sessionService: SessionService(client: APIClient.shared)))
+        _viewModel = StateObject(wrappedValue: AIChatViewModel(
+            sessionService: SessionService(client: APIClient.shared),
+            sessionId: sessionId
+        ))
     }
 
     // MARK: - Body Property
@@ -29,17 +32,23 @@ struct AIChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 8) {
-                        ForEach(viewModel.messages) { message in
-                            HStack {
-                                if message.sender == .ai {
-                                    bubble(text: message.text, color: .gray.opacity(0.2), alignment: .leading)
-                                    Spacer()
-                                } else {
-                                    Spacer()
-                                    bubble(text: message.text, color: .blue.opacity(0.8), alignment: .trailing)
+                        if viewModel.isLoading && viewModel.messages.isEmpty {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .padding()
+                        } else {
+                            ForEach(viewModel.messages) { message in
+                                HStack {
+                                    if message.sender == .ai {
+                                        bubble(text: message.text, color: .gray.opacity(0.2), alignment: .leading)
+                                        Spacer()
+                                    } else {
+                                        Spacer()
+                                        bubble(text: message.text, color: .blue.opacity(0.8), alignment: .trailing)
+                                    }
                                 }
+                                .id(message.id)
                             }
-                            .id(message.id)
                         }
                     }
                     .padding()
@@ -51,6 +60,15 @@ struct AIChatView: View {
                         }
                     }
                 }
+            }
+
+            if let error = viewModel.error {
+                Text("Error: \(error.localizedDescription)")
+                    .foregroundColor(.red)
+                    .padding()
+                    .background(Color.red.opacity(0.1))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
             }
 
             Divider()
@@ -71,6 +89,7 @@ struct AIChatView: View {
                     Image(systemName: "paperplane.fill")
                         .foregroundColor(.blue)
                 }
+                .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -78,7 +97,7 @@ struct AIChatView: View {
         }
         .navigationTitle("AI Chat")
         .onAppear {
-            viewModel.loadMessages(for: sessionId)
+            viewModel.loadMessages()
         }
     }
 
